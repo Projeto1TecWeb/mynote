@@ -1,13 +1,11 @@
 package mynote;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import mynote.Note;
@@ -89,7 +87,7 @@ public class DAO {
 	}
 
 	public void adiciona(Note note) {
-		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user) values(?,?,?,?,?,?)";
+		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user) values(?,?,?,?,?)";
 		PreparedStatement stmt;
 		try {
 			stmt = connection.prepareStatement(sql);
@@ -97,7 +95,7 @@ public class DAO {
 			stmt.setString(2, note.getTag());
 			stmt.setString(3, note.getColor());
 			stmt.setString(4, note.getIcon());
-//			stmt.setInt(5, note.getIdUser());
+			stmt.setInt(5, note.getIdUser());
 
 
 			stmt.execute();
@@ -108,35 +106,38 @@ public class DAO {
 		}
 	}
 
-//	public void altera(Note note) {
-//		String sql = "UPDATE Pessoas SET " + "nome=?, nascimento=?, altura=? WHERE id=?";
-//		PreparedStatement stmt;
-//		try {
-//			stmt = connection.prepareStatement(sql);
-//			stmt.setString(1, note.getNome());
-//			stmt.setDate(2, new Date(note.getNascimento().getTimeInMillis()));
-//			stmt.setDouble(3, note.getAltura());
-//			stmt.setInt(4, note.getId());
-//			stmt.execute();
-//			stmt.close();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public void remove(Integer id) {
-//		PreparedStatement stmt;
-//		try {
-//			stmt = connection.prepareStatement("DELETE FROM Pessoas WHERE id=?");
-//			stmt.setLong(1, id);
-//			stmt.execute();
-//			stmt.close();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//	}
+	public void altera(Note note) {
+		String sql = "UPDATE note SET " + "note_text=?, tag=?, color=? ,icon=? WHERE id_note=?";
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(sql);
+
+			stmt.setString(1, note.getNoteText());
+			stmt.setString(2,note.getTag());
+			stmt.setString(3, note.getColor());
+			stmt.setString(4, note.getIcon());
+			stmt.setInt(5, note.getIdNote());
+
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void remove(Integer id) {
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement("DELETE FROM note WHERE id_note=?");
+			stmt.setLong(1, id);
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
 
