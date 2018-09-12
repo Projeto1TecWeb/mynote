@@ -15,19 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mynote.DAO;
-import mynote.Note;
+import mynote.User;
 
 /**
  * Servlet implementation class EditNote
  */
-@WebServlet("/EditNote")
-public class EditNote extends HttpServlet {
+@WebServlet("/EditUser")
+public class EditUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditNote() {
+    public EditUser() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,14 +40,11 @@ public class EditNote extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("<html><body>");
 		out.println("<form method='post'>");
-		out.println("Id: <input type='text' name='idNote'><br>");
+		out.println("Id: <input type='text' name='idUser'><br>");
 
-		out.println("Text: <input type='text' name='text'><br>");
-		out.println("Icon: <input type='text' name='icon'><br>");
-		out.println("Color: <input type='text' name='color'><br>");
-		out.println("Tag: <input type='text' name='tag'><br>");
-		out.println("IdUser: <input type='text' name='idUser'><br>");
-
+		out.println("Name: <input type='text' name='name'><br>");
+		out.println("Username: <input type='text' name='username'><br>");
+		out.println("Password: <input type='text' name='password'><br>");
 
 		out.println("<input type='submit' value='Submit'>");
 		out.println("</form>");
@@ -64,18 +61,17 @@ public class EditNote extends HttpServlet {
 
 		DAO dao = new DAO();
 		
-		Note note = new Note();
+		User user = new User();
 //		note.setId(Integer.valueOf(request.getParameter("id")));
-		note.setNoteText(request.getParameter("text"));
-		note.setTag((request.getParameter("tag")));
-		note.setColor((request.getParameter("color")));
-		note.setIcon((request.getParameter("icon")));
-		note.setIdNote(Integer.valueOf(request.getParameter("idNote")));
+		user.setName(request.getParameter("name"));
+		user.setUsername((request.getParameter("username")));
+		user.setPassword((request.getParameter("password")));
+		user.setIdUser(Integer.valueOf(request.getParameter("idUser")));
 
-		dao.alteraNota(note);
+		dao.alteraUser(user);
 		PrintWriter out = response.getWriter();
 		out.println("<html><body>");
-		out.println("atualizado" + note.getIdNote());
+		out.println("atualizado" + user.getIdUser());
 		out.println("</body></html>");
 		dao.close();
 	}
