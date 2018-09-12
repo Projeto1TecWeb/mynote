@@ -43,7 +43,7 @@ public class RemoveNote extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		 DAO dao = new DAO();
-		 dao.remove(Integer.valueOf(request.getParameter("idNote")));
+		 dao.removeNota(Integer.valueOf(request.getParameter("idNote")));
 		  PrintWriter out = response.getWriter();
 		  out.println("<html><body>");
 		  out.println("removido");

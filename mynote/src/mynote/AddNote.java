@@ -57,7 +57,7 @@ public class AddNote extends HttpServlet {
 		 note.setIdUser(Integer.parseInt(request.getParameter("idUser")));
 
 
-		 dao.adiciona(note);
+		 dao.adicionaNota(note);
 		 PrintWriter out = response.getWriter();
 		 out.println("<html><body>");
 		 out.println("adicionado" + note.getIdNote());

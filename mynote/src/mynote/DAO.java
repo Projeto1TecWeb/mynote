@@ -21,7 +21,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/mynote?useSSL=false&useTimezone=true&serverTimezone=UTC", "root", "fetrex123");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/mynote?useSSL=false&useTimezone=true&serverTimezone=UTC", "root", "");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

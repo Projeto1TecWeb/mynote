@@ -34,7 +34,7 @@ public class Lista extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		DAO dao = new DAO();
-		List<Note> notes = dao.getLista();
+		List<Note> notes = dao.getListaNota();
 		PrintWriter out = response.getWriter();
 		out.println("<html><body><table border='1'>");
 		out.println("<tr><td>ID</td><td>Nome</td>" + "<td>Nascimento</td><td>Altura</td></tr>");

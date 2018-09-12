@@ -66,7 +66,7 @@ public class EditNoteText extends HttpServlet {
 		note.setIcon("tag");
 		note.setIdNote(Integer.parseInt(myMap.get("idNote")));
 
-		dao.altera(note);
+		dao.alteraNota(note);
 
 		dao.close();
 	}
