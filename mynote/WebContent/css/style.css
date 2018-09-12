@@ -24,3 +24,11 @@
 		margin:0% !important;
 	
 }
+ #nav{
+	display:flex;
+	justify-content:space-between;
+} 
+
+.navcontainer {
+  display: flex;
+}

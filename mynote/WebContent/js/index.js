@@ -15,15 +15,14 @@ function debounce(func, wait, immediate) {
 		if (callNow) func.apply(context, args);
 	};
 };
-function alou(idNote){
+function onNoteTextChange(idNote){
 	let note = document.getElementById("editor"+idNote)
 	note.addEventListener("input", debounce(()=>{
 		console.log('atualizando o bd')
-// let xhr = new XMLHttpRequest();
+
 		const url = "/mynote/EditNoteText"
 		let noteText = note.innerText
-// let params = "noteText=" + encodeURIComponent(noteText)+"idNote=" +
-// encodeURIComponent(idNote)
+
 		let params = {
 				"noteText":encodeURIComponent(noteText),
 				"idNote":encodeURIComponent(idNote)
@@ -42,16 +41,17 @@ function alou(idNote){
 			    console.log('request enviado') // .json(), etc.
 			    // same as function(response) {return response.text();}
 			)
-// xhr.open("POST", url);
-// xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-// xhr.send('note='+(JSON.stringify(params)));
-		
-
-// console.log(document.getElementByClassName('noteText')[0].innerText)
-	},1000*2), false);
+	},1000*2), false)	
+	;
 }
 document.addEventListener('DOMContentLoaded', function() {
 	console.log("importou o js")
+	
+	var iconPicker = document.querySelectorAll('select');
+    var instIcon= M.FormSelect.init(iconPicker, {});
+    console.log('ta com o picker')
+	var sidenav = document.querySelectorAll('.sidenav');
+    var inst = M.Sidenav.init(sidenav, {});
 	var elems = document.querySelectorAll('.tooltipped');
 	var instances = M.Tooltip.init(elems, {});
 	document.getElementById('editor1').addEventListener('input',()=>{
