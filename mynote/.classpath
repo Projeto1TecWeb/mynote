@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="/Users/juanjg/apache-tomcat-9.0.10/lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="/Users/juanjg/apache-tomcat-9.0.10/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="/Users/juanjg/apache-tomcat-9.0.10/lib/tomcat-api.jar"/>
+	<classpathentry kind="lib" path="/Users/juanjg/tecweb/gson-2.8.5-javadoc.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gson_lib"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -14,16 +14,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Servlet implementation class EditNoteText
+ * Servlet implementation class EditNoteTag
  */
-@WebServlet("/EditNoteText")
-public class EditNoteText extends HttpServlet {
+@WebServlet("/EditNoteTag")
+public class EditNoteTag extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditNoteText() {
+    public EditNoteTag() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,10 +41,9 @@ public class EditNoteText extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
 //		Gson gson = new Gson();
 
-	    System.out.println(request.getParameter("note"));
+//	    System.out.println(request.getParameter("note"));
         String jsonObj = request.getParameter("note");
         
         
@@ -54,12 +53,12 @@ public class EditNoteText extends HttpServlet {
 //	    System.out.println(myMap.values());
 	    
 	    
-	    System.out.println(myMap.get("idNote"));
+	    System.out.println(myMap.get("tag"));
 
 		DAO dao = new DAO();
 		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")));
 //		note.setId(Integer.valueOf(request.getParameter("id")));
-		note.setNoteText(myMap.get("noteText"));
+		note.setTag(myMap.get("tag"));
 
 		dao.alteraNota(note);
 

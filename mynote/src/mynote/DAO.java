@@ -77,6 +77,39 @@ public class DAO {
 	}
 
 
+	public Note getNote(Integer noteId) {
+		String sql = "SELECT * from note WHERE id_note = ?";
+		PreparedStatement stmt;
+		List<Note> notes = new ArrayList<Note>();
+		Note note = new Note();
+		try {
+			stmt = connection.prepareStatement(sql);
+
+			stmt.setInt(1, noteId);
+
+			ResultSet result = stmt.executeQuery();
+			
+			  while(result.next()) {
+				    
+				    note.setIdNote(result.getInt("id_note"));
+				    note.setColor(result.getString("color"));
+				    note.setTag(result.getString("tag"));
+				    note.setNoteText(result.getString("note_text"));
+				    note.setIcon(result.getString("icon"));
+				    note.setIdUser(result.getInt("id_user"));
+
+				    notes.add(note);
+				  }
+			
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return note;
+	}
+	
 	public void adicionaNota(Note note) {
 		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user) values(?,?,?,?,?)";
 		PreparedStatement stmt;

@@ -1,5 +1,7 @@
 package mynote;
 
+import com.google.gson.Gson;
+
 public class Note {
 	private Integer idNote;
 	private String noteText;
@@ -7,6 +9,7 @@ public class Note {
 	private String color;
 	private String icon;
 	private Integer idUser;
+	private String info;
 	public Integer getIdNote() {
 		return idNote;
 	}
@@ -43,5 +46,23 @@ public class Note {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
+	public String getInfo() {
+		Gson gson = new Gson();
+
+//		String info = "{"+
+//				"idNote:"+this.getIdNote()+
+//				",noteText:"+this.getNoteText()+
+//				",tag:"+this.getTag()+
+//				",color:"+this.getColor()+
+//				",icon:"+this.getIcon()+
+//				",idUser:"+this.getIdUser()+
+//				 "}";
+		System.out.println(gson.toJson(this));
+		return gson.toJson(this);
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
 
 }

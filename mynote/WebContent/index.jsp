@@ -53,20 +53,29 @@
 
 
 	<div class="container">
-		<div>
+		<!-- 		<div> -->
+		<!-- 			<div class="row"> -->
+		<!-- 				<div class="col s12"> -->
+		<!-- 					<div class="row"> -->
+		<!-- 						<div class="input-field col s12"> -->
+		<!-- 							<i class="material-icons prefix">add</i> <input type="text" -->
+		<!-- 								id="autocomplete-input" class="autocomplete"> <label -->
+		<!-- 								for="autocomplete-input">Make a note...</label> -->
+		<!-- 						</div> -->
+		<!-- 					</div> -->
+		<!-- 				</div> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
+		 
 			<div class="row">
-				<div class="col s12">
-					<div class="row">
-						<div class="input-field col s12">
-							<i class="material-icons prefix">add</i> <input type="text"
-								id="autocomplete-input" class="autocomplete"> <label
-								for="autocomplete-input">Make a note...</label>
-						</div>
-					</div>
+				<div class="input-field col s12" id=''>
+					<i class="material-icons prefix">add</i> <input
+						id="newNote" type="text" class="validate"> <label
+						for="icon_prefix">Make a Note...</label>
 				</div>
-			</div>
-		</div>
 
+			</div>
+		
 
 
 		<%-- 		<%
@@ -77,10 +86,10 @@
 
 		<div class="row note">
 			<jsp:useBean id="dao" class="mynote.DAO" />
-			<c:forEach var="note" items="${dao.lista}" varStatus="idNote">
+			<c:forEach var="note" items="${dao.listaNota}" varStatus="idNote">
 				<div class='col s12 m4 l3 notinha'>
 					<div class="card indigo hoverable">
-						<div class="card-content" contenteditable="true">
+						<div class="card-content">
 							<span class="card-title activator grey-text text-darken-4">Card
 								Title<i class="material-icons right tooltipped"
 								data-position="left" data-tooltip="Customize!">more_vert</i>
@@ -94,13 +103,15 @@
 								<a href="#" onclick="M.toast({html: 'I am a tag'})">
 									#${note.tag}</a>
 							</p>
-<%-- 							<div contenteditable="true" id="tag${note.idNote}"
-								class="card-panel indigo lighten-1"
-								onfocus="onTagChange(${note.idNote})">
+							
+													<div contenteditable="true" id="editor${note.idNote}"
+							class="card-panel indigo lighten-1"
+							onfocus="onNoteTextChange(${note.idNote})">
 
-								<span id='noteText${idNote.index}' class="white-text">#${note.tag}
-								</span>
-							</div> --%>
+							<span id='noteText${idNote.index}' class="white-text">${note.noteText}
+							</span>
+						</div>
+
 						</div>
 
 						<div class="card-reveal">
@@ -126,13 +137,13 @@
 							</div>
 						</div>
 
-						<div contenteditable="true" id="editor${note.idNote}"
-							class="card-panel indigo lighten-1"
-							onfocus="onNoteTextChange(${note.idNote})">
+							<div contenteditable="true" id="tag${note.idNote}"
+								class="card-panel indigo lighten-1"
+								onfocus="onTagChange(${note.idNote})">
 
-							<span id='noteText${idNote.index}' class="white-text">${note.noteText}
-							</span>
-						</div>
+								<span id='note${idNote.index}' class="white-text">#${note.tag}
+								</span>
+							</div>
 					</div>
 				</div>
 			</c:forEach>

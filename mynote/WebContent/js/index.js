@@ -44,6 +44,35 @@ function onNoteTextChange(idNote){
 	},1000*2), false)	
 	;
 }
+function onTagChange(idNote){
+	let note = document.getElementById("tag"+idNote)
+	note.addEventListener("input", debounce(()=>{
+		console.log('atualizando o bd')
+
+		const url = "/mynote/EditNoteTag"
+		let tag = note.innerText
+
+		let params = {
+				"tag":encodeURIComponent(tag),
+				"idNote":encodeURIComponent(idNote)
+		}
+		console.log(idNote)
+		console.log('request enviado')
+		fetch(url, {
+		    method : "POST",
+		    body: 'note='+JSON.stringify(params),
+		    headers:    {
+		        "Content-Type": "application/x-www-form-urlencoded"
+		    }
+
+
+		}).then(
+			    // same as function(response) {return response.text();}
+//				note.removeEventListener('input',onNoteTextChange)
+			)
+	},1000*2), false)	
+	
+}
 document.addEventListener('DOMContentLoaded', function() {
 	console.log("importou o js")
 	
