@@ -109,7 +109,29 @@ public class DAO {
 		}
 		return note;
 	}
-	
+	public Integer getLastInsertedId() {
+		String sql = "SELECT LAST_INSERT_ID()";
+		PreparedStatement stmt;
+		Integer idNote = null;
+		try {
+			stmt = connection.prepareStatement(sql);
+
+
+			ResultSet result = stmt.executeQuery();
+			
+			if(result.next()) {
+				  idNote = result.getInt(1);
+				  
+				}
+			System.out.print(idNote);
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return idNote;
+	}
 	public void adicionaNota(Note note) {
 		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user) values(?,?,?,?,?)";
 		PreparedStatement stmt;

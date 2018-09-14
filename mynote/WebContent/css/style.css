@@ -32,3 +32,9 @@
 .navcontainer {
   display: flex;
 }
+#addNoteButton:hover{
+	background-color:#bdbdbd;!important
+}
+#addNoteButton{
+	background-color:rgba(241, 247, 246, 0.836);!important
+}

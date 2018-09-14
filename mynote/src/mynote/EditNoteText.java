@@ -1,6 +1,7 @@
 package mynote;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.Map;
 
@@ -64,6 +65,12 @@ public class EditNoteText extends HttpServlet {
 		dao.alteraNota(note);
 
 		dao.close();
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		System.out.println(gson.toJson(myMap));
+		out.print(gson.toJson(myMap));
+		out.flush();
 	}
 
 }

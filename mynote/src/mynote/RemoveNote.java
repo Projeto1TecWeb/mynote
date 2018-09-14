@@ -29,13 +29,8 @@ public class RemoveNote extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		 PrintWriter out = response.getWriter();
-		 out.println("<html><body>");
-		 out.println("<form method='post'>");
-		 out.println("Remover ID: <input type='number' name='idNote'><br>");
-		 out.println("<input type='submit' value='Submit'>");
-		 out.println("</form>");
-		 out.println("<body><html>");	}
+
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -43,11 +38,14 @@ public class RemoveNote extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		 DAO dao = new DAO();
+		 
+		 
+		 
 		 dao.removeNota(Integer.valueOf(request.getParameter("idNote")));
-		  PrintWriter out = response.getWriter();
-		  out.println("<html><body>");
-		  out.println("removido");
-		  out.println("</body></html>");
+
+		 
+		 
+		 
 		  dao.close();
 	}
 

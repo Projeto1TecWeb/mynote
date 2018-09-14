@@ -66,16 +66,23 @@
 		<!-- 				</div> -->
 		<!-- 			</div> -->
 		<!-- 		</div> -->
-		 
-			<div class="row">
-				<div class="input-field col s12" id=''>
-					<i class="material-icons prefix">add</i> <input
-						id="newNote" type="text" class="validate"> <label
-						for="icon_prefix">Make a Note...</label>
-				</div>
+
+		<div class="row">
+			<div class="input-field col s12 m12 l12" id=''>
+
+				<input id="newNote" type="text" class="validate col s11 m11 l11">
+				<label for="icon_prefix">Make a Note...</label> <a
+					id='addNoteButton' onclick="onMakeNoteChange()"
+					class="waves-effect waves btn-floating btn-small offset-s11 offset-m11 offset-l11 grey lighten-1"
+					style="margin-left: 2%"><i class="material-icons">add</i></a>
+
 
 			</div>
-		
+
+
+
+		</div>
+
 
 
 		<%-- 		<%
@@ -84,7 +91,7 @@
  --%>
 
 
-		<div class="row note">
+		<div class="row note" id='alou'>
 			<jsp:useBean id="dao" class="mynote.DAO" />
 			<c:forEach var="note" items="${dao.listaNota}" varStatus="idNote">
 				<div class='col s12 m4 l3 notinha'>
@@ -98,19 +105,13 @@
 								<i class="material-icons">check</i> ${note.icon}
 							</p>
 
+							<div contenteditable="true" id="editor${note.idNote}"
+								class="card-panel indigo lighten-1"
+								onfocus="onNoteTextChange(${note.idNote})">
 
-							<p>
-								<a href="#" onclick="M.toast({html: 'I am a tag'})">
-									#${note.tag}</a>
-							</p>
-							
-													<div contenteditable="true" id="editor${note.idNote}"
-							class="card-panel indigo lighten-1"
-							onfocus="onNoteTextChange(${note.idNote})">
-
-							<span id='noteText${idNote.index}' class="white-text">${note.noteText}
-							</span>
-						</div>
+								<span id='noteText${idNote.index}' class="white-text">${note.noteText}
+								</span>
+							</div>
 
 						</div>
 
@@ -118,32 +119,20 @@
 							<div>
 								<span class="card-title grey-text text-darken-4">Card
 									Title<i class="material-icons right">close</i>
+								</span> <span class="card-title grey-text text-darken-4">delete
+									note<i class="material-icons right">close</i>
 								</span>
-								<!-- 								<div class="input-field ">
-								<i class="tiny material-icons right" >insert_chart</i>
-									<select class="icons">
-									
-										<option value="" disabled selected>Change color</option>
-										<option class=''value="" data-icon="./icons/baseline_code_black_18dp.png">
-					code</option> 
-					 
-					
-										<option value="" data-icon="images/office.jpg">example
-											2</option>
-										<option value="" data-icon="images/yuna.jpg">example
-											3</option>
-									</select> <label>Images in select</label>
-								</div> -->
+
 							</div>
 						</div>
 
-							<div contenteditable="true" id="tag${note.idNote}"
-								class="card-panel indigo lighten-1"
-								onfocus="onTagChange(${note.idNote})">
+						<div contenteditable="true" id="tag${note.idNote}"
+							class="card-panel indigo lighten-1"
+							onfocus="onTagChange(${note.idNote})">
 
-								<span id='note${idNote.index}' class="white-text">#${note.tag}
-								</span>
-							</div>
+							<span id='note${idNote.index}' class="white-text">#${note.tag}
+							</span>
+						</div>
 					</div>
 				</div>
 			</c:forEach>

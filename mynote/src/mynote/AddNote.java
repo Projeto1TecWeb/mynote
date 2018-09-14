@@ -2,12 +2,17 @@ package mynote;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Servlet implementation class AddNote
@@ -29,40 +34,45 @@ public class AddNote extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
-		out.println("<html><body>");
-		out.println("<form method='post'>");
-		out.println("Text: <input type='text' name='text'><br>");
-		out.println("Icon: <input type='text' name='icon'><br>");
-		out.println("Color: <input type='text' name='color'><br>");
-		out.println("Tag: <input type='text' name='tag'><br>");
-		out.println("Tag: <input type='text' name='idUser'><br>");
-
-
-		out.println("<input type='submit' value='Submit'>");
-		out.println("</form>");
-		out.println("<body><html>");	}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		DAO dao = new DAO();
-		 Note note = new Note();
-		 note.setNoteText(request.getParameter("text"));
-		 note.setIcon((request.getParameter("icon")));
-		 note.setColor(request.getParameter("color"));
-		 note.setTag(request.getParameter("tag"));
-		 note.setIdUser(Integer.parseInt(request.getParameter("idUser")));
 
+		 
+		 
+		 String jsonObj = request.getParameter("note");
+	        
+	        
+	        Gson gson = new Gson(); 
+	        Type type = new TypeToken<Map<String, String>>(){}.getType();
+	        Map<String, String> myMap = gson.fromJson(jsonObj, type);
+//		    System.out.println(myMap.values());
+		    
+		    
+		    System.out.println(myMap.get("noteText"));
 
-		 dao.adicionaNota(note);
-		 PrintWriter out = response.getWriter();
-		 out.println("<html><body>");
-		 out.println("adicionado" + note.getIdNote());
-		 out.println("</body></html>");
-		 dao.close();
+			DAO dao = new DAO();
+			Note note = new Note();
+			 note.setNoteText(myMap.get("noteText"));
+			 note.setIcon((("icon")));
+			 note.setColor(("color"));
+			 note.setTag(("tag"));
+			 note.setIdUser(1);
+//			note.setId(Integer.valueOf(request.getParameter("id")));
+
+			dao.adicionaNota(note);
+			note.setIdNote(dao.getLastInsertedId());
+			dao.close();
+			PrintWriter out = response.getWriter();
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			System.out.println(gson.toJson(note));
+			out.print(gson.toJson(note));
+			out.flush();
 	}
 
 }
