@@ -13,6 +13,68 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./css/style.css" />
 <script src="./js/index.js"></script>
+<script src="./index.js"></script>
+
+<script type="text/javascript">
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+function onQuerySubmit(userId){
+	let noteContainer = document.getElementById("alou")
+
+	let note = document.getElementById("search")
+	note.addEventListener("input", debounce(()=>{
+		console.log('enviando a query')
+
+		const url = "/mynote/SearchNote"
+		let query = note.value
+
+		let params = {
+				"query":encodeURIComponent(query),
+				"userId":encodeURIComponent(userId)
+				
+		}
+		console.log('request enviado')
+		fetch(url, {
+		    method : "POST",
+		    body: 'query='+JSON.stringify(params),
+		    headers:    {
+		        "Content-Type": "application/x-www-form-urlencoded"
+		    }
+
+
+		}).then((res) =>{
+					(res.json().then((data)=>{
+						console.log(data)
+						
+						noteContainer.innerHTML = ""
+						
+							data.forEach((note)=>{
+							    card = createNote(note)
+							    noteContainer.insertAdjacentHTML('afterbegin',card)
+							})
+//						let url = window.location.pathname + window.location.search + window.location.hash
+//						load(url, document.getElementById("tag"+idNote));
+
+					}))
+				}
+			)
+	},1000), false)	
+
+}
+
+</script>
 
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
@@ -36,6 +98,7 @@
 	</nav> -->
 
 
+
 	<nav class='row blue lighten-2'>
 		<div class="nav-wrapper">
 			<a href="#" class="brand-logo col s3 m3 l3 left" id="logoName"><i
@@ -43,7 +106,7 @@
 
 			<div
 				class="input-field col s6 m6 l6 offset-s3 offset-m3 offset-l3 center">
-				<input id="search" type="search" required> <label
+				<input id="search" type="search" required onFocus = "onQuerySubmit(1)"> <label
 					class="label-icon" for="search"><i class="material-icons">search</i></label>
 				<i class="material-icons">close</i>
 			</div>
@@ -74,7 +137,7 @@
 				<label for="icon_prefix">Make a Note...</label> <a
 					id='addNoteButton' onclick="onMakeNoteChange()"
 					class="waves-effect waves btn-floating btn-small offset-s11 offset-m11 offset-l11 grey lighten-1"
-					style="margin-left: 2%"><i class="material-icons">add</i></a>
+					style="margin-left: 1%"><i class="material-icons">add</i></a>
 
 
 			</div>
@@ -94,6 +157,11 @@
 		<div class="row note" id='alou'>
 			<jsp:useBean id="dao" class="mynote.DAO" />
 			<c:forEach var="note" items="${dao.listaNota}" varStatus="idNote">
+				<!-- 				<script>
+					console.log(JSON.parse('${note.getInfo()}'))
+				</script>
+			 -->
+
 				<div class='col s12 m4 l3 notinha'>
 					<div class="card indigo hoverable">
 						<div class="card-content">
@@ -117,11 +185,37 @@
 
 						<div class="card-reveal">
 							<div>
-								<span class="card-title grey-text text-darken-4">Card
-									Title<i class="material-icons right">close</i>
-								</span> <span class="card-title grey-text text-darken-4">delete
+								<span class="card-title grey-text text-darken-4">delete
 									note<i class="material-icons right">close</i>
 								</span>
+								<ul class="collapsible">
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">filter_drama</i>First
+										</div>
+										<div class="collapsible-body">
+											<span>Lorem ipsum dolor sit amet.</span>
+										</div>
+									</li>
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">color_lens</i>Change Color
+										</div>
+										<div class="collapsible-body">
+											<span>Lorem ipsum dolor sit amet.</span>
+										</div>
+									</li>
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">delete</i>Delete Note
+										</div>
+										<div class="collapsible-body">
+											<span>Lorem ipsum dolor sit amet.</span>
+										</div>
+									</li>
+								</ul>
+
+
 
 							</div>
 						</div>
@@ -133,11 +227,16 @@
 							<span id='note${idNote.index}' class="white-text">#${note.tag}
 							</span>
 						</div>
+						<div class="chips">
+							<input class="custom-class">
+						</div>
+						  <div class="chips">
+						  oiii
+						  </div>
+						
 					</div>
 				</div>
 			</c:forEach>
-
-
 
 
 		</div>

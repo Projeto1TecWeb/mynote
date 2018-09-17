@@ -75,6 +75,64 @@ public class DAO {
 		}
 		return notes;
 	}
+	
+	public List<Note> searchNotesByText(String query, Integer userID) {
+		List<Note> notes = new ArrayList<Note>();
+		PreparedStatement stmt = null;
+		try {
+
+			stmt = connection.prepareStatement("SELECT * FROM note WHERE note_text LIKE ? AND id_user=? ORDER BY id_note DESC ");
+			
+			stmt.setString(1, "%"+query+"%");
+			stmt.setInt(2, 1);
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			while (rs.next()) {
+				Note note = new Note();
+				note.setIdNote(rs.getInt("id_note"));
+				note.setNoteText(rs.getString("note_text"));
+
+				note.setTag(rs.getString("tag"));
+				note.setIcon(rs.getString("icon"));
+				note.setColor(rs.getString("color"));
+				note.setIdUser(rs.getInt("id_user"));
+
+				notes.add(note);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return notes;
+	}
+
+
 
 
 	public Note getNote(Integer noteId) {

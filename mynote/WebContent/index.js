@@ -57,46 +57,39 @@ function onNoteTextChange(idNote){
 }
 
 
-function onQuerySubmit(userId){
-	let noteContainer = document.getElementById("alou")
-
+function onQuerySubmit(){
 	let note = document.getElementById("search")
 	note.addEventListener("input", debounce(()=>{
 		console.log('enviando a query')
-
-		const url = "/mynote/SearchNote"
-		let query = note.value
-
-		let params = {
-				"query":encodeURIComponent(query),
-				"userId":encodeURIComponent(userId)
-				
-		}
-		console.log('request enviado')
-		fetch(url, {
-		    method : "POST",
-		    body: 'query='+JSON.stringify(params),
-		    headers:    {
-		        "Content-Type": "application/x-www-form-urlencoded"
-		    }
-
-
-		}).then((res) =>{
-					(res.json().then((data)=>{
-						console.log(data)
-						
-						noteContainer.innerHtml = ""
-						
-						data.foreEach((note)=>{
-							card = createNote(note)
-							noteContainer.insertAdjacentHTML( 'afterbegin', card)
-						})
-//						let url = window.location.pathname + window.location.search + window.location.hash
-//						load(url, document.getElementById("tag"+idNote));
-
-					}))
-				}
-			)
+//
+//		const url = "/mynote/EditNoteTag"
+//		let tag = note.innerText
+//
+//		let params = {
+//				"tag":encodeURIComponent(tag),
+//				"idNote":encodeURIComponent(idNote)
+//		}
+//		console.log(idNote)
+//		console.log('request enviado')
+//		fetch(url, {
+//		    method : "POST",
+//		    body: 'note='+JSON.stringify(params),
+//		    headers:    {
+//		        "Content-Type": "application/x-www-form-urlencoded"
+//		    }
+//
+//
+//		}).then((res) =>{
+//					(res.json().then((data)=>{
+//						note.setAttribute("style", "color:white");
+//						note.innerText = '#'+data.tag
+//						M.toast({html: 'Tag updated!!'})
+////						let url = window.location.pathname + window.location.search + window.location.hash
+////						load(url, document.getElementById("tag"+idNote));
+//
+//					}))
+//				}
+//			)
 	},1000), false)	
 
 }
@@ -125,9 +118,9 @@ function onTagChange(idNote){
 
 		}).then((res) =>{
 					(res.json().then((data)=>{
-						console.log(data)
-					card = createNote(data)
-				noteContainer.insertAdjacentHTML( 'afterbegin', card)
+						note.setAttribute("style", "color:white");
+						note.innerText = '#'+data.tag
+						M.toast({html: 'Tag updated!!'})
 //						let url = window.location.pathname + window.location.search + window.location.hash
 //						load(url, document.getElementById("tag"+idNote));
 
