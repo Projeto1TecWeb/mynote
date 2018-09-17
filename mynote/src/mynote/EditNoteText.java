@@ -54,22 +54,23 @@ public class EditNoteText extends HttpServlet {
         Map<String, String> myMap = gson.fromJson(jsonObj, type);
 //	    System.out.println(myMap.values());
 	    
-	    
+
 	    System.out.println(myMap.get("idNote"));
 
 		DAO dao = new DAO();
 		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")));
+
 //		note.setId(Integer.valueOf(request.getParameter("id")));
 		note.setNoteText(myMap.get("noteText"));
-
 		dao.alteraNota(note);
+       
 
 		dao.close();
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		System.out.println(gson.toJson(myMap));
-		out.print(gson.toJson(myMap));
+		System.out.println(gson.toJson(note));
+		out.print(gson.toJson(note));
 		out.flush();
 	}
 

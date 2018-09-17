@@ -59,7 +59,7 @@ public class AddNote extends HttpServlet {
 			Note note = new Note();
 			 note.setNoteText(myMap.get("noteText"));
 			 note.setIcon((("icon")));
-			 note.setColor(("color"));
+			 note.setColor(("#00d900"));
 			 note.setTag(("tag"));
 			 note.setIdUser(1);
 //			note.setId(Integer.valueOf(request.getParameter("id")));

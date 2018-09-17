@@ -67,8 +67,8 @@ public class EditNoteTag extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		System.out.println(gson.toJson(myMap));
-		out.print(gson.toJson(myMap));
+		System.out.println(gson.toJson(note));
+		out.print(gson.toJson(note));
 		out.flush();
 	}
 

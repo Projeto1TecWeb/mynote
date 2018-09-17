@@ -23,7 +23,11 @@ function debounce(func, wait, immediate) {
 	};
 };
 function onNoteTextChange(idNote){
+	let noteContainer = document.getElementById("alou")
+
 	let note = document.getElementById("editor"+idNote)
+	let notezin = document.getElementById('note'+idNote)
+
 	note.addEventListener("input", debounce(()=>{
 		console.log('atualizando o bd')
 
@@ -48,6 +52,13 @@ function onNoteTextChange(idNote){
 			(res.json().then((data)=>{
 				note.setAttribute("style", "color:white");
 				note.innerText = data.noteText
+				let noteInfo = document.getElementById("notinha"+idNote)
+
+				card = createNote(data)
+				noteInfo.innerHTML = card
+
+				noteContainer.insertBefore(noteInfo,document.getElementById("notinha"+(data.idNote-1)))
+
 				M.toast({html: 'Note updated!!'})
 
 			}))
@@ -83,17 +94,28 @@ function onQuerySubmit(userId){
 
 		}).then((res) =>{
 					(res.json().then((data)=>{
+						
+
 						console.log(data)
 						
-						noteContainer.innerHtml = ""
+						noteContainer.innerHTML = ""
 						
-						data.foreEach((note)=>{
+						data.forEach((note)=>{
+							console.log(note.idNote)
+							let noteInfo = document.createElement('div')
+							noteInfo.id = "notinha"+note.idNote
+							noteInfo.className = 'col s12 m4 l3 notinha'
 							card = createNote(note)
-							noteContainer.insertAdjacentHTML( 'afterbegin', card)
-						})
-//						let url = window.location.pathname + window.location.search + window.location.hash
-//						load(url, document.getElementById("tag"+idNote));
+							noteInfo.innerHTML = card
 
+							console.log(noteInfo)
+
+//							
+							noteContainer.appendChild(noteInfo);
+//							
+
+						})
+						
 					}))
 				}
 			)
@@ -102,6 +124,10 @@ function onQuerySubmit(userId){
 }
 
 function onTagChange(idNote){
+	let noteContainer = document.getElementById("alou")
+
+	let noteInfo = document.getElementById("notinha"+idNote)
+
 	let note = document.getElementById("tag"+idNote)
 	note.addEventListener("input", debounce(()=>{
 		console.log('atualizando o bd')
@@ -125,14 +151,17 @@ function onTagChange(idNote){
 
 		}).then((res) =>{
 					(res.json().then((data)=>{
-						console.log(data)
-						
-						note.setAttribute("style", "color:white");
-						note.innerText = '#'+data.tag
+
+						card = createNote(data)
+						noteInfo.innerHTML = card
+
+						noteContainer.insertBefore(noteInfo,document.getElementById("notinha"+(data.idNote-1)))
+
 						M.toast({html: 'Tag updated!!'})
 
-//						let url = window.location.pathname + window.location.search + window.location.hash
-//						load(url, document.getElementById("tag"+idNote));
+// let url = window.location.pathname + window.location.search +
+// window.location.hash
+// load(url, document.getElementById("tag"+idNote));
 
 					}))
 				}
@@ -141,8 +170,10 @@ function onTagChange(idNote){
 }
 
 function onColorPicker(idNote){
-	let colorPicker = document.getElementById("colorPicker")
+	let colorPicker = document.getElementById("colorPicker"+idNote)
 	let note = document.getElementById('note'+idNote)
+	let noteContainer = document.getElementById("alou")
+	let noteInfo = document.getElementById("notinha"+idNote)
 
 
 	colorPicker.addEventListener("input", debounce(()=>{
@@ -167,12 +198,16 @@ function onColorPicker(idNote){
 
 		}).then((res) =>{
 					(res.json().then((data)=>{
-						console.log(data)
-						note.style.backgroundColor = color;
+					
+						card = createNote(data)
+						noteInfo.innerHTML = card
+
+						noteContainer.insertBefore(noteInfo,document.getElementById("notinha"+(data.idNote-1)))
 
 						M.toast({html: 'Color updated!!'})
-//						let url = window.location.pathname + window.location.search + window.location.hash
-//						load(url, document.getElementById("tag"+idNote));
+// let url = window.location.pathname + window.location.search +
+// window.location.hash
+// load(url, document.getElementById("tag"+idNote));
 
 					}))
 				}
@@ -209,8 +244,9 @@ function removeNote(idNote){
 						console.log(data)
 	
 						M.toast({html: 'Note removed!!'})
-//						let url = window.location.pathname + window.location.search + window.location.hash
-//						load(url, document.getElementById("tag"+idNote));
+// let url = window.location.pathname + window.location.search +
+// window.location.hash
+// load(url, document.getElementById("tag"+idNote));
 
 					}))
 				}
@@ -221,47 +257,81 @@ function removeNote(idNote){
 
 function createNote(note){
 	card = 				
-        `<div class='col s12 m4 l3 notinha'>
-		<div class="card indigo hoverable">
-			<div class="card-content">
-				<span class="card-title activator grey-text text-darken-4">Card
-					Title<i class="material-icons right tooltipped"
-					data-position="left" data-tooltip="Customize!">more_vert</i>
-				</span>
-				<p>
-					<i class="material-icons">check</i> ${note.icon}
-				</p>
+        `<div >
+					<div class="card hoverable" id='note${note.idNote}' style="background-color:${note.color};">
+						<div class="card-content" >
+							<span class="card-title activator grey-text text-darken-4">Card
+								Title<i class="material-icons right tooltipped"
+								data-position="left" data-tooltip="Customize!">more_vert</i>
+							</span>
+							<p>
+								<i class="material-icons">check</i> ${note.icon}
+							</p>
 
-				<div contenteditable="true" id="editor${note.idNote}"
-					class="card-panel indigo lighten-1"
-					onfocus="onNoteTextChange(${note.idNote})">
+							<div contenteditable="true" id="editor${note.idNote}"
+								class="card-panel"
+								onfocus="onNoteTextChange(${note.idNote})" style="background-color:${note.color};">
 
-					<span id='noteText${note.idNote}' class="white-text">${note.noteText}
-					</span>
+								<span id='noteText${note.idNote}' class="white-text">${note.noteText}
+								</span>
+							</div>
+
+						</div>
+
+						<div class="card-reveal">
+							<div>
+								<span class="card-title grey-text text-darken-4">delete
+									note<i class="material-icons right">close</i>
+								</span>
+								<ul class="collapsible">
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">filter_drama</i>First
+										</div>
+										<div class="collapsible-body">
+											<span>Lorem ipsum dolor sit amet.</span>
+										</div>
+									</li>
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">color_lens</i> <input type="color"
+												id="colorPicker" name="color" value="#e66465" onclick='onColorPicker(${note.idNote})' for="head">Color</label>
+
+										</div>
+										<div class="collapsible-body">
+											<span>Lorem ipsum dolor sit amet.</span>
+										</div>
+									</li>
+									<li>
+										<div class="collapsible-header">
+											<i class="material-icons">delete</i>Delete Note
+										</div>
+										<div class="collapsible-body">
+											<span>Lorem ipsum dolor sit amet.</span>
+										</div>
+									</li>
+								</ul>
+
+
+
+							</div>
+						</div>
+
+						<div contenteditable="true" id="tag${note.idNote}"
+							class="card-panel"
+							onfocus="onTagChange(${note.idNote})" style="background-color:${note.color};">
+
+							<span id='note${note.idNote}' class="white-text">#${note.tag}
+							</span>
+						</div>
+						<div class="chips">
+							<input class="custom-class">
+						</div>
+						<div class="chips">oiii</div>
+
+					</div>
 				</div>
-
-			</div>
-
-			<div class="card-reveal">
-				<div>
-					<span class="card-title grey-text text-darken-4">Card
-						Title<i class="material-icons right">close</i>
-					</span> <span class="card-title grey-text text-darken-4">delete
-						note<i class="material-icons right">close</i>
-					</span>
-
-				</div>
-			</div>
-
-			<div contenteditable="true" id="tag${note.idNote}"
-				class="card-panel indigo lighten-1"
-				onfocus="onTagChange(${note.idNote})">
-
-				<span id='note${note.idNote}' class="white-text">#${note.tag}
-				</span>
-			</div>
-		</div>
-	</div>`
+`
 	
 return card
 	
@@ -281,11 +351,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     var collap = document.querySelectorAll('.collapsible');
     var instCollap = M.Collapsible.init(collap, {});
-//	var elems = document.querySelectorAll('.tooltipped');
-//	var instances = M.Tooltip.init(elems, {});
-	document.getElementById('editor1').addEventListener('input',()=>{
-		console.log('to clicando na tecla')
-	},false)
+// var elems = document.querySelectorAll('.tooltipped');
+// var instances = M.Tooltip.init(elems, {});
+
 	let newNote = document.getElementById("newNote")
 	newNote.addEventListener("keyup", function(event) {
 		  // Cancel the default action, if needed
@@ -321,10 +389,21 @@ function onMakeNoteChange(){
 
 		}).then((res) =>{
 			(res.json().then((data)=>{
-				console.log(data)
+				
+				let noteInfo = document.createElement('div')
+				noteInfo.id = "notinha"+data.idNote
+				noteInfo.className = 'col s12 m4 l3 notinha'
+
 				card = createNote(data)
-				noteContainer.insertAdjacentHTML( 'afterbegin', card)
-				newNote.value = ""
+				noteInfo.innerHTML = card
+
+				noteContainer.insertBefore(noteInfo,document.getElementById("notinha"+(data.idNote-1))
+)
+
+// console.log(data)
+// card = createNote(data)
+// noteContainer.insertAdjacentHTML( 'afterbegin', card)
+// newNote.value = ""
 			}))
 		}
 	)

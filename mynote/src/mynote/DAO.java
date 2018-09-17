@@ -32,7 +32,7 @@ public class DAO {
 		List<Note> notes = new ArrayList<Note>();
 		PreparedStatement stmt = null;
 		try {
-			stmt = connection.prepareStatement("SELECT * FROM note ORDER BY id_note DESC");
+			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user = 1 ORDER BY id_note DESC ");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
