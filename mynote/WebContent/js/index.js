@@ -126,8 +126,11 @@ function onTagChange(idNote){
 		}).then((res) =>{
 					(res.json().then((data)=>{
 						console.log(data)
-					card = createNote(data)
-				noteContainer.insertAdjacentHTML( 'afterbegin', card)
+						
+						note.setAttribute("style", "color:white");
+						note.innerText = '#'+data.tag
+						M.toast({html: 'Tag updated!!'})
+
 //						let url = window.location.pathname + window.location.search + window.location.hash
 //						load(url, document.getElementById("tag"+idNote));
 
@@ -136,6 +139,85 @@ function onTagChange(idNote){
 			)
 	},1000*2), false)	
 }
+
+function onColorPicker(idNote){
+	let colorPicker = document.getElementById("colorPicker")
+	let note = document.getElementById('note'+idNote)
+
+
+	colorPicker.addEventListener("input", debounce(()=>{
+		console.log('atualizando a cor')
+
+		const url = "/mynote/EditNoteColor"
+		let color = colorPicker.value
+
+		let params = {
+				"color":encodeURIComponent(color),
+				"idNote":encodeURIComponent(idNote)
+		}
+		console.log(idNote)
+		console.log('request enviado')
+		fetch(url, {
+		    method : "POST",
+		    body: 'note='+JSON.stringify(params),
+		    headers:    {
+		        "Content-Type": "application/x-www-form-urlencoded"
+		    }
+
+
+		}).then((res) =>{
+					(res.json().then((data)=>{
+						console.log(data)
+						note.style.backgroundColor = color;
+
+						M.toast({html: 'Color updated!!'})
+//						let url = window.location.pathname + window.location.search + window.location.hash
+//						load(url, document.getElementById("tag"+idNote));
+
+					}))
+				}
+			)
+	},1000*2), false)
+}
+
+function removeNote(idNote){
+	
+	let note = document.getElementById('note'+idNote)
+
+
+	colorPicker.addEventListener("input", debounce(()=>{
+		console.log('atualizando a cor')
+
+		const url = "/mynote/RemoveNote"
+		let color = colorPicker.value
+
+		let params = {
+				"idNote":encodeURIComponent(idNote)
+		}
+		console.log(idNote)
+		console.log('request enviado')
+		fetch(url, {
+		    method : "POST",
+		    body: 'note='+JSON.stringify(params),
+		    headers:    {
+		        "Content-Type": "application/x-www-form-urlencoded"
+		    }
+
+
+		}).then((res) =>{
+					(res.json().then((data)=>{
+						console.log(data)
+	
+						M.toast({html: 'Note removed!!'})
+//						let url = window.location.pathname + window.location.search + window.location.hash
+//						load(url, document.getElementById("tag"+idNote));
+
+					}))
+				}
+			)
+	},1000*2), false)
+}
+
 
 function createNote(note){
 	card = 				

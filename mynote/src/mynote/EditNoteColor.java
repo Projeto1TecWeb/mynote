@@ -15,16 +15,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Servlet implementation class RemoveNote
+ * Servlet implementation class EditNoteColor
  */
-@WebServlet("/RemoveNote")
-public class RemoveNote extends HttpServlet {
+@WebServlet("/EditNoteColor")
+public class EditNoteColor extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RemoveNote() {
+    public EditNoteColor() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,7 +34,7 @@ public class RemoveNote extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -43,36 +43,34 @@ public class RemoveNote extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		
-	
-		 
-		 
-//			Gson gson = new Gson();
+//		Gson gson = new Gson();
 
-		    System.out.println(request.getParameter("note"));
-	        String jsonObj = request.getParameter("note");
-	        
-	        
-	        Gson gson = new Gson(); 
-	        Type type = new TypeToken<Map<String, String>>(){}.getType();
-	        Map<String, String> myMap = gson.fromJson(jsonObj, type);
-//		    System.out.println(myMap.values());
-		    
-		    
-		    System.out.println(myMap.get("idNote"));
+	    System.out.println(request.getParameter("note"));
+        String jsonObj = request.getParameter("note");
+        
+        
+        Gson gson = new Gson(); 
+        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        Map<String, String> myMap = gson.fromJson(jsonObj, type);
+//	    System.out.println(myMap.values());
+	    
+	    
+	    System.out.println(myMap.get("idNote"));
 
-			DAO dao = new DAO();
+		DAO dao = new DAO();
+		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")));
+//		note.setId(Integer.valueOf(request.getParameter("id")));
+		note.setColor(myMap.get("color"));
 
-			dao.removeNota(Integer.valueOf(request.getParameter("idNote")));
+		dao.alteraNota(note);
 
-
-			dao.close();
-			PrintWriter out = response.getWriter();
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			System.out.println(gson.toJson(myMap));
-			out.print(gson.toJson(myMap));
-			out.flush();
+		dao.close();
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		System.out.println(gson.toJson(myMap));
+		out.print(gson.toJson(myMap));
+		out.flush();
 	}
 
 }
