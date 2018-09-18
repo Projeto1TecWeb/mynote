@@ -28,11 +28,12 @@ public class DAO {
 		}
 	}
 
-	public List<Note> getListaNota() {
+	public List<Note> getListaNota(Integer idUser) {
 		List<Note> notes = new ArrayList<Note>();
 		PreparedStatement stmt = null;
 		try {
-			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user = 1 ORDER BY id_note DESC ");
+			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user =? ORDER BY id_note DESC ");
+			stmt.setInt(1, idUser);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,9 +75,8 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return notes;
-	}
-	
-	public List<Note> searchNotesByText(String query, Integer userID) {
+	}	
+	public List<Note> searchNotesByText(String query, Integer idUser) {
 		List<Note> notes = new ArrayList<Note>();
 		PreparedStatement stmt = null;
 		try {
@@ -84,7 +84,7 @@ public class DAO {
 			stmt = connection.prepareStatement("SELECT * FROM note WHERE note_text LIKE ? AND id_user=? ORDER BY id_note DESC ");
 			
 			stmt.setString(1, "%"+query+"%");
-			stmt.setInt(2, 1);
+			stmt.setInt(2, idUser);
 
 
 
@@ -135,8 +135,8 @@ public class DAO {
 
 
 
-	public Note getNote(Integer noteId) {
-		String sql = "SELECT * from note WHERE id_note = ?";
+	public Note getNote(Integer noteId, Integer idUser) {
+		String sql = "SELECT * from note WHERE id_note = ? AND id_user=?";
 		PreparedStatement stmt;
 		List<Note> notes = new ArrayList<Note>();
 		Note note = new Note();
@@ -144,6 +144,8 @@ public class DAO {
 			stmt = connection.prepareStatement(sql);
 
 			stmt.setInt(1, noteId);
+			stmt.setInt(2, idUser);
+
 
 			ResultSet result = stmt.executeQuery();
 			
@@ -338,6 +340,160 @@ public class DAO {
 			e.printStackTrace();
 		}
 
+	}
+	public boolean verifyUser(String username, String password) {
+		PreparedStatement stmt;
+		String passCheck = null;
+		try {
+			stmt = connection.prepareStatement("SELECT password FROM user WHERE username=?");
+			stmt.setString(1, username);
+			
+			ResultSet rs = null;
+			try {
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					passCheck = rs.getString("password");
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (password.equals(passCheck)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+	
+	public boolean checkUser(String username) {
+		PreparedStatement stmt;
+		Integer count = 1;
+		try {
+			stmt = connection.prepareStatement("SELECT COUNT(username) FROM user WHERE username= ?");
+			stmt.setString(1, username);
+			
+			ResultSet rs = null;
+			try {
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					count = rs.getInt("COUNT(username)");
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (count != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+	
+	public boolean checkPass(Integer idUser, String password) {
+		PreparedStatement stmt;
+		String pass = null;
+		try {
+			stmt = connection.prepareStatement("SELECT password FROM user WHERE id_user= ?");
+			stmt.setInt(1, idUser);
+			
+			ResultSet rs = null;
+			try {
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					pass = rs.getString("password");
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (password.equals(pass)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+	
+	public void changePass(Integer idUser, String password) {
+		String sql = "UPDATE user SET " + "password=? WHERE id_user=?";
+		PreparedStatement stmt;
+		try {
+			stmt = connection.prepareStatement(sql);
+
+			stmt.setString(1, password);
+			stmt.setInt(2, idUser);
+
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public int getIdFromUsername(String username) {
+		PreparedStatement stmt;
+		Integer idUser = null;
+		try {
+			stmt = connection.prepareStatement("SELECT id_user FROM user WHERE username=?");
+			stmt.setString(1, username);
+			
+			ResultSet rs = null;
+			try {
+				rs = stmt.executeQuery();
+				while(rs.next()) {
+					idUser = rs.getInt("id_user");
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return idUser;
+		
 	}
 	
 	public void close() {

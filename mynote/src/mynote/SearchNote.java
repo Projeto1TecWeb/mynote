@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -45,7 +46,8 @@ public class SearchNote extends HttpServlet {
 		// TODO Auto-generated method stub
         String jsonObj = request.getParameter("query");
         
-        
+		HttpSession session = request.getSession();
+		Integer idUser = (Integer)session.getAttribute("idUser");
         
         Gson gson = new Gson(); 
         Type type = new TypeToken<Map<String, String>>(){}.getType();
@@ -56,7 +58,7 @@ public class SearchNote extends HttpServlet {
 	    System.out.println(myMap.get("query"));
 
 		DAO dao = new DAO();
-		List<Note> notes = dao.searchNotesByText(myMap.get("query"),1);
+		List<Note> notes = dao.searchNotesByText(myMap.get("query"),idUser);
 		
 		dao.close();
 		PrintWriter out = response.getWriter();

@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,6 +48,8 @@ public class EditNoteTag extends HttpServlet {
 //	    System.out.println(request.getParameter("note"));
         String jsonObj = request.getParameter("note");
         
+		HttpSession session = request.getSession();
+		Integer idUser = (Integer)session.getAttribute("idUser");
         
         Gson gson = new Gson(); 
         Type type = new TypeToken<Map<String, String>>(){}.getType();
@@ -57,7 +60,7 @@ public class EditNoteTag extends HttpServlet {
 	    System.out.println(myMap.get("tag"));
 
 		DAO dao = new DAO();
-		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")));
+		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")), idUser);
 //		note.setId(Integer.valueOf(request.getParameter("id")));
 		note.setTag(myMap.get("tag"));
 

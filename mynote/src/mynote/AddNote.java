@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +42,8 @@ public class AddNote extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		Integer idUser = (Integer)session.getAttribute("idUser");
 
 		 
 		 
@@ -61,7 +64,7 @@ public class AddNote extends HttpServlet {
 			 note.setIcon((("icon")));
 			 note.setColor(("#00d900"));
 			 note.setTag(("tag"));
-			 note.setIdUser(1);
+			 note.setIdUser(idUser);
 //			note.setId(Integer.valueOf(request.getParameter("id")));
 
 			dao.adicionaNota(note);

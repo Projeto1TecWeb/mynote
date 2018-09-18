@@ -63,7 +63,7 @@ public class RemoveNote extends HttpServlet {
 
 			DAO dao = new DAO();
 
-			dao.removeNota(Integer.valueOf(request.getParameter("idNote")));
+			dao.removeNota(Integer.parseInt(myMap.get("idNote")));
 
 
 			dao.close();
