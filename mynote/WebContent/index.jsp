@@ -62,13 +62,13 @@
 			<i class="col s3 m3 l3 center large material-icons dropdown-trigger" href=# id="accountIcon" data-target='dropdown1'>account_circle</i>
 			
 			  <ul id='dropdown1' class='dropdown-content'>
-			  	<ul class="collapsible">
+			  	<ul class="collapsible" id='teste'>
 			  		<li>
-			  			<div class="collapsible-header">
+			  			<div class="collapsible-header" onClick='changePass()'>
 			  				<a href="#!" class="center" style=color:#1d87da>Change Password</a>
 			  			</div>
 			  			<div class="collapsible-body">
-			  				<form method='post' action="/mynote/changePassword">
+			  				<form method='post' action="/mynote/changePassword" >
 			  					<input type="hidden" id="idUser" name="idUser" value="${idUser}">
 								Old password: <input type='password' name='old_password'>
 								<br>
@@ -163,8 +163,7 @@
 
 						<div class="card-reveal">
 							<div>
-								<span class="card-title grey-text text-darken-4">delete
-									note<i class="material-icons right">close</i>
+								<span class="card-title grey-text text-darken-4">Edit<i class="material-icons right">close</i>
 								</span>
 								<ul class="collapsible">
 									<li>
@@ -176,7 +175,7 @@
 										</div>
 									</li>
 									<li>
-										<div class="collapsible-header">
+										<div class="collapsible-header" id="deleteButton">
 											<i class="material-icons">color_lens</i> <input type="color"
 												id="colorPicker${note.idNote}" name="color" value="#e66465"
 												onclick='onColorPicker(${note.idNote})'>
@@ -184,8 +183,8 @@
 										</div>
 									</li>
 									<li>
-										<div class="collapsible-header" onClick='removeNote(${note.idNote})'>
-											<i class="material-icons">delete</i>Delete 
+										<div class="collapsible-header" id="deleteButton" onClick='removeNote(${note.idNote})' style="display:flex;justify-content:flex-start;align-items:center;">
+											<i class="material-icons">delete</i>Delete
 										</div>
 
 									</li>

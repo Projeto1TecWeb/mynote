@@ -81,10 +81,12 @@ public class DAO {
 		PreparedStatement stmt = null;
 		try {
 
-			stmt = connection.prepareStatement("SELECT * FROM note WHERE note_text LIKE ? AND id_user=? ORDER BY id_note DESC ");
-			
-			stmt.setString(1, "%"+query+"%");
-			stmt.setInt(2, idUser);
+			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user=? AND (note_text LIKE ? OR tag LIKE ?) ORDER BY id_note DESC ");
+			stmt.setInt(1, idUser);
+
+			stmt.setString(2, "%"+query+"%");
+			stmt.setString(3, "%"+query+"%");
+	
 
 
 

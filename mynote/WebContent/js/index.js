@@ -302,7 +302,7 @@ function createNote(note) {
 								</div>
 							</li>
 							<li>
-								<div class="collapsible-header">
+								<div class="collapsible-header" id="deleteButton">
 									<i class="material-icons">color_lens</i> <input type="color"
 										id="colorPicker${note.idNote}" name="color" value="${note.color}"
 										onclick='onColorPicker(${note.idNote})'>
@@ -311,8 +311,8 @@ function createNote(note) {
 								
 							</li>
 							<li>
-								<div class="collapsible-header" onClick='removeNote(${note.idNote})'>
-									<i class="material-icons">delete</i>Delete 
+								<div class="collapsible-header" id="deleteButton" onClick='removeNote(${note.idNote})' style="display:flex;justify-content:flex-start;align-items:center;">
+									<i class="material-icons">delete</i>Delete
 								</div>
 							</li>
 						</ul>
@@ -346,6 +346,15 @@ function createNote(note) {
 
 }
 
+function changePass(){
+	console.log('cliquei no change pass')
+	let dropInst = document.getElementById('accountIcon')
+	setTimeout(()=>{
+	    dropInst.M_Dropdown.recalculateDimensions();
+
+	},350)
+	
+}
 document.addEventListener('DOMContentLoaded', function () {
 	console.log("importou o js")
 
@@ -360,19 +369,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		'limit': 3
 	});
 
-//	var grid = document.querySelector('.grid');
-//	var pckry = new Packery(grid, {
-//		// options
-//		itemSelector: '.grid-item',
-//		percentPosition:true
-//	})
-//	document.querySelectorAll('.grid-item').forEach((el)=>{
-//			  let draggie = new Draggabilly( el );
-//			  pckry.bindDraggabillyEvents( draggie )
-//
-//	})
-//	
-
 	
 	var collap = document.querySelectorAll('.collapsible');
 	var instCollap = M.Collapsible.init(collap, {});
@@ -381,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instDrop = M.Dropdown.init(elems, {'closeOnClick':false});
-
+    
 	let newNote = document.getElementById("newNote")
 	newNote.addEventListener("keyup", function (event) {
 		// Cancel the default action, if needed

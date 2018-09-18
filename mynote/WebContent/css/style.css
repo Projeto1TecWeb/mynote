@@ -46,14 +46,8 @@
 	background-color:#dedcdc!important;
 }
 
-#deleteButton{
-	background-color:#dedcdc;
-    border-radius: 7%;
-    padding: 2%;
-    margin: 2%;
-    margin-right: 0%;
-    box-shadow: 0.05em 0.05em #bbbbbb;
-}
 #deleteButton:hover{
-	background-color:#bbbbbb;
+	background-color:#dedcdc;
+	box-shadow: 0.05em 0.05em #bbbbbb;
+	
 }
