@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,8 @@ public class DAO {
 			e.printStackTrace();
 		}
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/mynote?useSSL=false&useTimezone=true&serverTimezone=UTC", "root", "");
+			connection = DriverManager.getConnection(
+					"jdbc:mysql://localhost/mynote?useSSL=false&useTimezone=true&serverTimezone=UTC", "root", "");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,7 +35,7 @@ public class DAO {
 		List<Note> notes = new ArrayList<Note>();
 		PreparedStatement stmt = null;
 		try {
-			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user =? ORDER BY id_note DESC ");
+			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user =? ORDER BY date DESC ");
 			stmt.setInt(1, idUser);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -55,6 +58,7 @@ public class DAO {
 				note.setIcon(rs.getString("icon"));
 				note.setColor(rs.getString("color"));
 				note.setIdUser(rs.getInt("id_user"));
+				note.setTime(rs.getString("date"));
 
 				notes.add(note);
 			}
@@ -75,20 +79,19 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return notes;
-	}	
+	}
+
 	public List<Note> searchNotesByText(String query, Integer idUser) {
 		List<Note> notes = new ArrayList<Note>();
 		PreparedStatement stmt = null;
 		try {
 
-			stmt = connection.prepareStatement("SELECT * FROM note WHERE id_user=? AND (note_text LIKE ? OR tag LIKE ?) ORDER BY id_note DESC ");
+			stmt = connection.prepareStatement(
+					"SELECT * FROM note WHERE id_user=? AND (note_text LIKE ? OR tag LIKE ?) ORDER BY date DESC ");
 			stmt.setInt(1, idUser);
 
-			stmt.setString(2, "%"+query+"%");
-			stmt.setString(3, "%"+query+"%");
-	
-
-
+			stmt.setString(2, "%" + query + "%");
+			stmt.setString(3, "%" + query + "%");
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -111,6 +114,7 @@ public class DAO {
 				note.setIcon(rs.getString("icon"));
 				note.setColor(rs.getString("color"));
 				note.setIdUser(rs.getInt("id_user"));
+				note.setTime(rs.getString("date"));
 
 				notes.add(note);
 			}
@@ -133,9 +137,6 @@ public class DAO {
 
 		return notes;
 	}
-
-
-
 
 	public Note getNote(Integer noteId, Integer idUser) {
 		String sql = "SELECT * from note WHERE id_note = ? AND id_user=?";
@@ -148,29 +149,30 @@ public class DAO {
 			stmt.setInt(1, noteId);
 			stmt.setInt(2, idUser);
 
-
 			ResultSet result = stmt.executeQuery();
-			
-			  while(result.next()) {
-				    
-				    note.setIdNote(result.getInt("id_note"));
-				    note.setColor(result.getString("color"));
-				    note.setTag(result.getString("tag"));
-				    note.setNoteText(result.getString("note_text"));
-				    note.setIcon(result.getString("icon"));
-				    note.setIdUser(result.getInt("id_user"));
 
-				    notes.add(note);
-				  }
-			
+			while (result.next()) {
+
+				note.setIdNote(result.getInt("id_note"));
+				note.setColor(result.getString("color"));
+				note.setTag(result.getString("tag"));
+				note.setNoteText(result.getString("note_text"));
+				note.setIcon(result.getString("icon"));
+				note.setIdUser(result.getInt("id_user"));
+				note.setTime(result.getString("date"));
+
+				notes.add(note);
+			}
+
 			stmt.close();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return note;
 	}
+
 	public Integer getLastInsertedId() {
 		String sql = "SELECT LAST_INSERT_ID()";
 		PreparedStatement stmt;
@@ -178,33 +180,36 @@ public class DAO {
 		try {
 			stmt = connection.prepareStatement(sql);
 
-
 			ResultSet result = stmt.executeQuery();
-			
-			if(result.next()) {
-				  idNote = result.getInt(1);
-				  
-				}
+
+			if (result.next()) {
+				idNote = result.getInt(1);
+
+			}
 			System.out.print(idNote);
 			stmt.close();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return idNote;
 	}
+
 	public void adicionaNota(Note note) {
-		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user) values(?,?,?,?,?)";
+		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user, date) values(?,?,?,?,?,?)";
 		PreparedStatement stmt;
 		try {
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			LocalDateTime now = LocalDateTime.now();
 			stmt = connection.prepareStatement(sql);
 			stmt.setString(1, note.getNoteText());
 			stmt.setString(2, note.getTag());
 			stmt.setString(3, note.getColor());
 			stmt.setString(4, note.getIcon());
 			stmt.setInt(5, note.getIdUser());
-
+			stmt.setString(6, dtf.format(now));
+			System.out.println(dtf.format(now));
 
 			stmt.execute();
 			stmt.close();
@@ -215,17 +220,20 @@ public class DAO {
 	}
 
 	public void alteraNota(Note note) {
-		String sql = "UPDATE note SET " + "note_text=?, tag=?, color=? ,icon=? WHERE id_note=?";
+		String sql = "UPDATE note SET " + "note_text=?, tag=?, color=? ,icon=?, date=? WHERE id_note=?";
 		PreparedStatement stmt;
 		try {
+
 			stmt = connection.prepareStatement(sql);
 
 			stmt.setString(1, note.getNoteText());
-			stmt.setString(2,note.getTag());
+			stmt.setString(2, note.getTag());
 			stmt.setString(3, note.getColor());
 			stmt.setString(4, note.getIcon());
-			stmt.setInt(5, note.getIdNote());
-
+			stmt.setString(5, note.getTime());
+			stmt.setInt(6, note.getIdNote());
+			
+			System.out.println(note.getTime());
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -247,7 +255,7 @@ public class DAO {
 		}
 
 	}
-	
+
 	public List<User> getListaUser() {
 		List<User> users = new ArrayList<User>();
 		PreparedStatement stmt = null;
@@ -293,7 +301,7 @@ public class DAO {
 		}
 		return users;
 	}
-	
+
 	public void adicionaUser(User user) {
 		String sql = "INSERT INTO user" + "(name, username, password) values(?,?,?)";
 		PreparedStatement stmt;
@@ -310,7 +318,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void alteraUser(User user) {
 		String sql = "UPDATE user SET " + "name=?, username=?, password=? WHERE id_user=?";
 		PreparedStatement stmt;
@@ -329,7 +337,7 @@ public class DAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void removeUser(Integer id) {
 		PreparedStatement stmt;
 		try {
@@ -343,26 +351,26 @@ public class DAO {
 		}
 
 	}
+
 	public boolean verifyUser(String username, String password) {
 		PreparedStatement stmt;
 		String passCheck = null;
 		try {
 			stmt = connection.prepareStatement("SELECT password FROM user WHERE username=?");
 			stmt.setString(1, username);
-			
+
 			ResultSet rs = null;
 			try {
 				rs = stmt.executeQuery();
-				while(rs.next()) {
+				while (rs.next()) {
 					passCheck = rs.getString("password");
 				}
-				
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
@@ -371,85 +379,80 @@ public class DAO {
 		}
 		if (password.equals(passCheck)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 
 	}
-	
+
 	public boolean checkUser(String username) {
 		PreparedStatement stmt;
 		Integer count = 1;
 		try {
 			stmt = connection.prepareStatement("SELECT COUNT(username) FROM user WHERE username= ?");
 			stmt.setString(1, username);
-			
+
 			ResultSet rs = null;
 			try {
 				rs = stmt.executeQuery();
-				while(rs.next()) {
+				while (rs.next()) {
 					count = rs.getInt("COUNT(username)");
 				}
-				
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		if (count != 0) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 
 	}
-	
+
 	public boolean checkPass(Integer idUser, String password) {
 		PreparedStatement stmt;
 		String pass = null;
 		try {
 			stmt = connection.prepareStatement("SELECT password FROM user WHERE id_user= ?");
 			stmt.setInt(1, idUser);
-			
+
 			ResultSet rs = null;
 			try {
 				rs = stmt.executeQuery();
-				while(rs.next()) {
+				while (rs.next()) {
 					pass = rs.getString("password");
 				}
-				
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		if (password.equals(pass)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 
 	}
-	
+
 	public void changePass(Integer idUser, String password) {
 		String sql = "UPDATE user SET " + "password=? WHERE id_user=?";
 		PreparedStatement stmt;
@@ -466,38 +469,37 @@ public class DAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int getIdFromUsername(String username) {
 		PreparedStatement stmt;
 		Integer idUser = null;
 		try {
 			stmt = connection.prepareStatement("SELECT id_user FROM user WHERE username=?");
 			stmt.setString(1, username);
-			
+
 			ResultSet rs = null;
 			try {
 				rs = stmt.executeQuery();
-				while(rs.next()) {
+				while (rs.next()) {
 					idUser = rs.getInt("id_user");
 				}
-				
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return idUser;
-		
+
 	}
-	
+
 	public void close() {
 		// TODO Auto-generated method stub
 		try {
@@ -507,7 +509,5 @@ public class DAO {
 			e.printStackTrace();
 		}
 	}
-	
-	
-}
 
+}

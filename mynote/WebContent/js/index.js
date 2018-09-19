@@ -26,9 +26,10 @@ function debounce(func, wait, immediate) {
 
 function onNoteTextChange(idNote) {
 	let noteContainer = document.getElementById("alou")
-
+	
 	let note = document.getElementById("editor" + idNote)
 	let notezin = document.getElementById('note' + idNote)
+	let noteInfo = document.getElementById("notinha" + idNote)
 
 	note.addEventListener("input", debounce(() => {
 		console.log('atualizando o bd')
@@ -54,20 +55,16 @@ function onNoteTextChange(idNote) {
 			(res.json().then((data) => {
 				note.setAttribute("style", "color:white");
 				note.innerText = data.noteText
-				let noteInfo = document.getElementById("notinha" + idNote)
-
-				card = createNote(data)
-				noteInfo.innerHTML = card
-
-				noteContainer.insertBefore(noteInfo, document.getElementById("notinha" + (data.idNote - 1)))
-
+				noteInfo.style="order:-1;"
+				let time = document.getElementById('time'+idNote)
+				time.innerText = 'Last edited: '+ data.time
 				M.toast({
 					html: 'Note updated!!'
 				})
 
 			}))
 		})
-	}, 1000 * 2), false);
+	}, 1000), false);
 }
 
 
@@ -112,16 +109,7 @@ function onQuerySubmit(userId) {
 					noteInfo.innerHTML = card
 
 					console.log(noteInfo)
-//					var grid = document.querySelector('.grid');
-//					var pckry = new Packery(grid, {
-//						// options
-//						itemSelector: '.grid-item',
-//						percentPosition:true
-//					})
-//					grid.appendChild(noteInfo)
-//					pckry.prepended(noteInfo)
-
-												
+					
 					noteContainer.appendChild(noteInfo);
 												
 
@@ -162,31 +150,29 @@ function onTagChange(idNote) {
 		}).then((res) => {
 			(res.json().then((data) => {
 
-				card = createNote(data)
-				noteInfo.innerHTML = card
 
-				noteContainer.insertBefore(noteInfo, document.getElementById("notinha" + (data.idNote - 1)))
+				note.style.color = "white";
 
+				note.innerText ='#'+ tag
+				noteInfo.style="order:-1;"
+				let time = document.getElementById('time'+idNote)
+				time.innerText = 'Last edited: '+ data.time
 				M.toast({
 					html: 'Tag updated!!'
 				})
-
-				// let url = window.location.pathname + window.location.search +
-				// window.location.hash
-				// load(url, document.getElementById("tag"+idNote));
-
 			}))
 		})
-	}, 1000 * 2), false)
+	}, 1500), false)
 }
+
 
 function onColorPicker(idNote) {
 	let colorPicker = document.getElementById("colorPicker" + idNote)
 	let note = document.getElementById('note' + idNote)
 	let noteContainer = document.getElementById("alou")
 	let noteInfo = document.getElementById("notinha" + idNote)
-
-
+	
+	console.log(idNote)
 	colorPicker.addEventListener("input", debounce(() => {
 		console.log('atualizando a cor')
 
@@ -209,22 +195,23 @@ function onColorPicker(idNote) {
 
 		}).then((res) => {
 			(res.json().then((data) => {
-
-				card = createNote(data)
-				noteInfo.innerHTML = card
-
-				noteContainer.insertBefore(noteInfo, document.getElementById("notinha" + (data.idNote - 1)))
+				console.log(color)
+//				card = createNote(data)
+//				noteInfo.innerHTML = card
+				note.style.backgroundColor = `${color}`
+//				noteInfo.style="order:-1;"
+				let time = document.getElementById('time'+idNote)
+				time.innerText = 'Last edited: '+ data.time
+//				noteContainer.insertBefore(noteInfo, document.getElementById("notinha" + (data.idNote - 1)))
 
 				M.toast({
 					html: 'Color updated!!'
 				})
-				// let url = window.location.pathname + window.location.search +
-				// window.location.hash
-				// load(url, document.getElementById("tag"+idNote));
+
 
 			}))
 		})
-	}, 500), false)
+	}, 100), false)
 }
 
 
@@ -266,81 +253,52 @@ function removeNote(idNote) {
 
 function createNote(note) {
 	card =
-		`<div>
-			<div class="card hoverable" id='note${note.idNote}' style="background-color:${note.color};">
-				<div class="card-content" >
-					<span class="card-title activator grey-text text-darken-4">Card
-						Title<i class="material-icons right tooltipped"
-						data-position="left" data-tooltip="Customize!">more_vert</i>
-					</span>
-					<p>
-						<i class="material-icons">check</i> ${note.icon}
-					</p>
-
-					<div contenteditable="true" id="editor${note.idNote}"
-						class="card-panel"
-						onfocus="onNoteTextChange(${note.idNote})" style="background-color:${note.color};">
-
-						<span id='noteText${note.idNote}' class="white-text">${note.noteText}
-						</span>
-					</div>
-
-				</div>
-
-				<div class="card-reveal">
-					<div>
-						<span class="card-title grey-text text-darken-4">delete
-							note<i class="material-icons right">close</i>
-						</span>
-						<ul class="collapsible">
-							<li>
-								<div class="collapsible-header">
-									<i class="material-icons">filter_drama</i>First
-								</div>
-								<div class="collapsible-body">
-									<span>Lorem ipsum dolor sit amet.</span>
-								</div>
-							</li>
-							<li>
-								<div class="collapsible-header" id="deleteButton">
-									<i class="material-icons">color_lens</i> <input type="color"
-										id="colorPicker${note.idNote}" name="color" value="${note.color}"
-										onclick='onColorPicker(${note.idNote})'>
-
-								</div>
-								
-							</li>
-							<li>
-								<div class="collapsible-header" id="deleteButton" onClick='removeNote(${note.idNote})' style="display:flex;justify-content:flex-start;align-items:center;">
-									<i class="material-icons">delete</i>Delete
-								</div>
-							</li>
-						</ul>
+		`<div class="card hoverable" id='note${note.idNote}'
+						style="background-color:${note.color};">
+						<div class="card-content" style="background-color:transparent;margin:10px;padding:10px;">
+							<span class="card-title activator grey-text text-darken-4">Card
+								Title<i  class="material-icons right dropdown-trigger " href='#'
+								data-target='dropdown${note.idNote}'>more_vert </i>
+							</span>
 
 
 
-					</div>
-				</div>
-
-				<div contenteditable="true" id="tag${note.idNote}"
-					class="card-panel"
-					onfocus="onTagChange(${note.idNote})" style="background-color:${note.color};">
-
-					<span id='note${note.idNote}' class="white-text">#${note.tag}
-					</span>
-				</div>
-				
-										<form>
-						<div class="row">
-						<div class="chips">${note.tag}</div>
-<!-- 							<div >
-								
-							</div> -->
 
 						</div>
-						</form>
-			</div>
-			</div>`
+						<div class='noteText' contenteditable="true"
+							id="editor${note.idNote}"
+							onfocus="onNoteTextChange(${note.idNote})"
+							style="background-color: transparent;">
+
+							<span id='noteText${note.idNote}' class="white-text">${note.noteText}
+							</span>
+						</div>
+
+						<ul id='dropdown${note.idNote}' class='dropdown-content'>
+							<li><div id="deleteButton">
+									<i class="material-icons">color_lens</i> <input type="color"
+										id="colorPicker${note.idNote}" name="color"
+										value="${note.color}" onclick='onColorPicker(${note.idNote})'>
+
+								</div></li>
+							<li><div id="deleteButton"
+									onClick='removeNote(${note.idNote})'
+									style="display: flex; justify-content: flex-start; align-items: center;">
+									<i class="material-icons">delete</i>Delete
+								</div></li>
+						</ul>
+						<div id='noteTag'>
+							<div contenteditable="true" class='tag' id="tag${note.idNote}"
+								class="card-panel " onfocus="onTagChange(${note.idNote})">
+
+								<span id='note${note.idNote}' class="white-text">#${note.tag}
+								</span>
+							</div>
+							<div id='time${note.idNote}'>Last edited: ${note.time}</div>
+						</div>
+
+
+					</div>`
 
 	return card
 
@@ -369,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		'limit': 3
 	});
 
-	
+    
 	var collap = document.querySelectorAll('.collapsible');
 	var instCollap = M.Collapsible.init(collap, {});
 	// var elems = document.querySelectorAll('.tooltipped');
@@ -388,6 +346,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById("addNoteButton").click();
 		}
 	});
+	
+
 });
 
 function onMakeNoteChange() {
@@ -430,7 +390,9 @@ function onMakeNoteChange() {
 //			grid.appendChild(noteInfo)
 //			pckry.prepended(noteInfo)
 			let firstChild = document.getElementById("alou").firstChild.innerHTML;
-			noteContainer.insertBefore(noteInfo,document.getElementById("notinha"+(data.idNote-1)))
+			noteContainer.insertBefore(noteInfo,noteContainer.firstElementChild)
+			var elems = document.querySelectorAll('.dropdown-trigger');
+		    var instDrop = M.Dropdown.init(elems, {'closeOnClick':false});
 
 		}))
 	})

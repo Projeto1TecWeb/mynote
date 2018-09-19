@@ -10,6 +10,7 @@ public class Note {
 	private String icon;
 	private Integer idUser;
 	private String info;
+	private String time;
 	public Integer getIdNote() {
 		return idNote;
 	}
@@ -62,6 +63,12 @@ public class Note {
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 

@@ -3,6 +3,8 @@ package mynote;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -56,14 +58,16 @@ public class EditNoteText extends HttpServlet {
         Gson gson = new Gson(); 
         Type type = new TypeToken<Map<String, String>>(){}.getType();
         Map<String, String> myMap = gson.fromJson(jsonObj, type);
-//	    System.out.println(myMap.values());
 	    
-
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		LocalDateTime now = LocalDateTime.now();
+		
+		
 	    System.out.println(myMap.get("idNote"));
 
 		DAO dao = new DAO();
 		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")), idUser);
-
+		note.setTime(dtf.format(now));
 //		note.setId(Integer.valueOf(request.getParameter("id")));
 		note.setNoteText(myMap.get("noteText"));
 		dao.alteraNota(note);
