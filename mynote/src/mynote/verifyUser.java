@@ -56,6 +56,8 @@ public class verifyUser extends HttpServlet {
 			site = "index.jsp";
 			Integer idUser = dao.getIdFromUsername(username);
 			session.setAttribute("idUser", idUser);
+			response.sendRedirect("index.jsp");
+
 		}
 		
 		request.getRequestDispatcher(site).include(request, response);

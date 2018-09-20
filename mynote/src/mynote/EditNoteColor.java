@@ -64,7 +64,7 @@ public class EditNoteColor extends HttpServlet {
 
 		DAO dao = new DAO();
 		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")), idUser);
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM/dd");
 		LocalDateTime now = LocalDateTime.now();
 		note.setTime(dtf.format(now));
 

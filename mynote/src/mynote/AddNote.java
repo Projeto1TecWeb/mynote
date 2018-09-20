@@ -66,9 +66,11 @@ public class AddNote extends HttpServlet {
 		note.setNoteText(myMap.get("noteText"));
 		note.setIcon((("icon")));
 		note.setColor(("#ffec9d"));
-		note.setTag(("tag"));
+		note.setTag(("#tag"));
+		note.setTitle("Title");
+
 		note.setIdUser(idUser);
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM/dd");
 		LocalDateTime now = LocalDateTime.now();
 		note.setTime(dtf.format(now));
 

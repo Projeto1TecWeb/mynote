@@ -74,4 +74,9 @@
 	padding:10px;
 	margin:10px;
 }
+.noteHeader{
+	    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
 

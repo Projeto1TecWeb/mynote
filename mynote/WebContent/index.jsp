@@ -120,13 +120,16 @@
 					id='notinha${note.idNote}'>
 					<div class="card hoverable" id='note${note.idNote}'
 						style="background-color:${note.color};">
-						<div class="card-content"
-							style="background-color: transparent; margin: 10px; padding: 10px;">
-							<span class="card-title activator grey-text text-darken-4">Card
-								Title<i class="material-icons dropdown-trigger " href='#'
+						<div class="card-content noteHeader" id='noteHeader${note.idNote}'
+							style="background-color: transparent; padding: 10px;">
+
+							<span contenteditable="true"
+								class="card-title activator grey-text text-darken-4 "
+								id='noteTitle${note.idNote}'
+								onfocus="onTitleChange(${note.idNote})">${note.title}</span><i
+								class="material-icons dropdown-trigger " href='#'
 								data-target='dropdown${note.idNote}' style='margin-left: 8px;'>more_vert
 							</i>
-							</span>
 
 
 
@@ -141,14 +144,13 @@
 						</div>
 
 						<ul id='dropdown${note.idNote}' class='dropdown-content'>
-							<li><div id="deleteButton">
+							<li><div>
 									<i class="material-icons">color_lens</i> <input type="color"
 										id="colorPicker${note.idNote}" name="color"
 										value="${note.color}" onclick='onColorPicker(${note.idNote})'>
 
 								</div></li>
-							<li><div id="deleteButton"
-									onClick='removeNote(${note.idNote})'
+							<li><div onClick='removeNote(${note.idNote})'
 									style="display: flex; justify-content: flex-start; align-items: center;">
 									<i class="material-icons">delete</i>Delete
 								</div></li>
@@ -161,7 +163,8 @@
 									<span id='note${note.idNote}'>${note.tag} </span>
 								</div>
 							</div>
-							<div id='time${note.idNote}' class='time' style='padding:5px;'>Last edited: ${note.time}</div>
+							<div id='time${note.idNote}' class='time' style='padding: 5px;'>Last
+								edited: ${note.time}</div>
 
 						</div>
 					</div>

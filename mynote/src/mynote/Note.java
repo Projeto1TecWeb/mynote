@@ -11,6 +11,7 @@ public class Note {
 	private Integer idUser;
 	private String info;
 	private String time;
+	private String title;
 	public Integer getIdNote() {
 		return idNote;
 	}
@@ -69,6 +70,12 @@ public class Note {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 

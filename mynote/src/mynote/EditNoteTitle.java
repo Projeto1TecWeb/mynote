@@ -18,16 +18,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * Servlet implementation class EditNoteText
+ * Servlet implementation class EditNoteTitle
  */
-@WebServlet("/EditNoteText")
-public class EditNoteText extends HttpServlet {
+@WebServlet("/EditNoteTitle")
+public class EditNoteTitle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditNoteText() {
+    public EditNoteTitle() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,33 +45,30 @@ public class EditNoteText extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-//		Gson gson = new Gson();
-
-	    System.out.println(request.getParameter("note"));
         String jsonObj = request.getParameter("note");
         
-    	HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		Integer idUser = (Integer)session.getAttribute("idUser");
-        
         
         Gson gson = new Gson(); 
         Type type = new TypeToken<Map<String, String>>(){}.getType();
         Map<String, String> myMap = gson.fromJson(jsonObj, type);
+//	    System.out.println(myMap.values());
 	    
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM/dd");
-		LocalDateTime now = LocalDateTime.now();
-		
-		
-	    System.out.println(myMap.get("idNote"));
+	    
+	    System.out.println(myMap.get("title"));
 
 		DAO dao = new DAO();
 		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")), idUser);
-		note.setTime(dtf.format(now));
 //		note.setId(Integer.valueOf(request.getParameter("id")));
-		note.setNoteText(myMap.get("noteText"));
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM/dd");
+		LocalDateTime now = LocalDateTime.now();
+		note.setTime(dtf.format(now));
+
+		note.setTitle(myMap.get("title"));
+
 		dao.alteraNota(note);
-       
 
 		dao.close();
 		PrintWriter out = response.getWriter();

@@ -59,7 +59,7 @@ public class DAO {
 				note.setColor(rs.getString("color"));
 				note.setIdUser(rs.getInt("id_user"));
 				note.setTime(rs.getString("date"));
-
+				note.setTitle(rs.getString("title"));
 				notes.add(note);
 			}
 		} catch (SQLException e) {
@@ -160,6 +160,7 @@ public class DAO {
 				note.setIcon(result.getString("icon"));
 				note.setIdUser(result.getInt("id_user"));
 				note.setTime(result.getString("date"));
+				note.setTitle(result.getString("title"));
 
 				notes.add(note);
 			}
@@ -197,10 +198,10 @@ public class DAO {
 	}
 
 	public void adicionaNota(Note note) {
-		String sql = "INSERT INTO note" + "(note_text, tag, color, icon, id_user, date) values(?,?,?,?,?,?)";
+		String sql = "INSERT INTO note" + "(note_text ,tag, color, icon, id_user, date, title) values(?,?,?,?,?,?,?)";
 		PreparedStatement stmt;
 		try {
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM/dd");
 			LocalDateTime now = LocalDateTime.now();
 			stmt = connection.prepareStatement(sql);
 			stmt.setString(1, note.getNoteText());
@@ -210,6 +211,8 @@ public class DAO {
 			stmt.setInt(5, note.getIdUser());
 			stmt.setString(6, dtf.format(now));
 			System.out.println(dtf.format(now));
+			stmt.setString(7, note.getTitle());
+
 
 			stmt.execute();
 			stmt.close();
@@ -220,7 +223,7 @@ public class DAO {
 	}
 
 	public void alteraNota(Note note) {
-		String sql = "UPDATE note SET " + "note_text=?, tag=?, color=? ,icon=?, date=? WHERE id_note=?";
+		String sql = "UPDATE note SET " + "note_text=?, tag=?, color=? ,icon=?, date=?,title=? WHERE id_note=?";
 		PreparedStatement stmt;
 		try {
 
@@ -231,7 +234,9 @@ public class DAO {
 			stmt.setString(3, note.getColor());
 			stmt.setString(4, note.getIcon());
 			stmt.setString(5, note.getTime());
-			stmt.setInt(6, note.getIdNote());
+			stmt.setString(6, note.getTitle());
+
+			stmt.setInt(7, note.getIdNote());
 			
 			System.out.println(note.getTime());
 			stmt.execute();

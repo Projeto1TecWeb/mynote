@@ -171,6 +171,48 @@ function onTagChange(idNote) {
 }
 
 
+function onTitleChange(idNote) {
+	let noteContainer = document.getElementById("alou")
+
+	let noteInfo = document.getElementById("notinha" + idNote)
+
+	let note = document.getElementById("noteTitle" + idNote)
+	note.addEventListener("input", debounce(() => {
+		console.log('atualizando o bd')
+
+		const url = "/mynote/EditNoteTitle"
+		let title = note.innerText
+
+		let params = {
+			"title": encodeURIComponent(title),
+			"idNote": encodeURIComponent(idNote)
+		}
+		console.log(idNote)
+		console.log('request enviado')
+		fetch(url, {
+			method: "POST",
+			body: 'note=' + JSON.stringify(params),
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			}
+
+
+		}).then((res) => {
+			(res.json().then((data) => {
+
+				noteInfo.style="order:-1;"
+				let time = document.getElementById('time'+idNote)
+				time.innerText = 'Last edited: '+ data.time
+				M.toast({
+					html: 'Title Updated!!'
+				})
+			}))
+		})
+	}, 1500), false)
+}
+
+
+
 function onColorPicker(idNote) {
 	let colorPicker = document.getElementById("colorPicker" + idNote)
 	let note = document.getElementById('note' + idNote)
@@ -258,13 +300,18 @@ function removeNote(idNote) {
 
 function createNote(note) {
 	card =
-		`<div class="card hoverable" id='note${note.idNote}'
+		`					<div class="card hoverable" id='note${note.idNote}'
 						style="background-color:${note.color};">
-						<div class="card-content" style="background-color:transparent;margin:10px;padding:10px;">
-							<span class="card-title activator grey-text text-darken-4">Card
-								Title<i  class="material-icons right dropdown-trigger " href='#'
-								data-target='dropdown${note.idNote}' style='margin-left: 8px;'>more_vert </i>
-							</span>
+						<div class="card-content noteHeader" id='noteHeader${note.idNote}'
+							style="background-color: transparent; padding: 10px;">
+
+							<span contenteditable="true"
+								class="card-title activator grey-text text-darken-4 "
+								id='noteTitle${note.idNote}'
+								onfocus="onTitleChange(${note.idNote})">${note.title}</span><i
+								class="material-icons dropdown-trigger " href='#'
+								data-target='dropdown${note.idNote}' style='margin-left: 8px;'>more_vert
+							</i>
 
 
 
@@ -275,34 +322,33 @@ function createNote(note) {
 							onfocus="onNoteTextChange(${note.idNote})"
 							style="background-color: transparent;">
 
-							<span id='noteText${note.idNote}' >${note.noteText}
-							</span>
+							<span id='noteText${note.idNote}'>${note.noteText} </span>
 						</div>
 
 						<ul id='dropdown${note.idNote}' class='dropdown-content'>
-							<li><div id="deleteButton">
+							<li><div>
 									<i class="material-icons">color_lens</i> <input type="color"
 										id="colorPicker${note.idNote}" name="color"
 										value="${note.color}" onclick='onColorPicker(${note.idNote})'>
 
 								</div></li>
-							<li><div id="deleteButton"
-									onClick='removeNote(${note.idNote})'
+							<li><div onClick='removeNote(${note.idNote})'
 									style="display: flex; justify-content: flex-start; align-items: center;">
 									<i class="material-icons">delete</i>Delete
 								</div></li>
 						</ul>
-						<div id='noteTag'>
-							<div contenteditable="true" class='tag' id="tag${note.idNote}"
-								class="card-panel " onfocus="onTagChange(${note.idNote})">
+						<div id='noteFooter'>
+							<div id='noteTag'>
+								<div contenteditable="true" class='tag' id="tag${note.idNote}"
+									class="card-panel " onfocus="onTagChange(${note.idNote})">
 
-								<span id='note${note.idNote}' >#${note.tag}
-								</span>
+									<span id='note${note.idNote}'>${note.tag} </span>
+								</div>
 							</div>
-							<div id='time${note.idNote}'>Last edited: ${note.time}</div>
+							<div id='time${note.idNote}' class='time' style='padding: 5px;'>Last
+								edited: ${note.time}</div>
+
 						</div>
-
-
 					</div>`
 
 	return card

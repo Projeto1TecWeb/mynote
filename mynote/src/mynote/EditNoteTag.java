@@ -65,7 +65,7 @@ public class EditNoteTag extends HttpServlet {
 		Note note = dao.getNote(Integer.parseInt(myMap.get("idNote")), idUser);
 //		note.setId(Integer.valueOf(request.getParameter("id")));
 		
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm MM/dd");
 		LocalDateTime now = LocalDateTime.now();
 		note.setTime(dtf.format(now));
 
