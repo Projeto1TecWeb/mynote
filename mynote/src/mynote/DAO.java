@@ -87,11 +87,13 @@ public class DAO {
 		try {
 
 			stmt = connection.prepareStatement(
-					"SELECT * FROM note WHERE id_user=? AND (note_text LIKE ? OR tag LIKE ?) ORDER BY date DESC ");
+					"SELECT * FROM note WHERE id_user=? AND (note_text LIKE ? OR tag LIKE ? OR title LIKE ?) ORDER BY date DESC ");
 			stmt.setInt(1, idUser);
 
 			stmt.setString(2, "%" + query + "%");
 			stmt.setString(3, "%" + query + "%");
+			stmt.setString(4, "%" + query + "%");
+
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
