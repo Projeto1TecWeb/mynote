@@ -19,7 +19,6 @@
 
 <!-- <script src="./index.js"></script>
  -->
-
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -29,17 +28,7 @@
 </head>
 <body>
 <body style="background-color: rgba(241, 247, 246, 0.836);">
-	<!-- 	<nav class="#64b5f6 blue lighten-2" class="z-depth-2">
-		<div class="nav-wrapper">
-			<a href="#" class="brand-logo" id="logoName"><i
-				class="large material-icons" id="mainIcon">assignment</i>myNote</a>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="badges.html">Account</a></li>
-				<li><i class="large material-icons" id="accountIcon">account_box</i></li>
-			</ul>
 
-		</div>
-	</nav> -->
 	<nav class='row blue lighten-2'>
 		<div class="nav-wrapper">
 			<a href="#" class="brand-logo col s3 m3 l3 left" id="logoName"><i
@@ -105,19 +94,6 @@
 
 
 	<div class="container">
-		<!-- 		<div> -->
-		<!-- 			<div class="row"> -->
-		<!-- 				<div class="col s12"> -->
-		<!-- 					<div class="row"> -->
-		<!-- 						<div class="input-field col s12"> -->
-		<!-- 							<i class="material-icons prefix">add</i> <input type="text" -->
-		<!-- 								id="autocomplete-input" class="autocomplete"> <label -->
-		<!-- 								for="autocomplete-input">Make a note...</label> -->
-		<!-- 						</div> -->
-		<!-- 					</div> -->
-		<!-- 				</div> -->
-		<!-- 			</div> -->
-		<!-- 		</div> -->
 
 		<div class="row">
 			<div class="input-field col s12 m12 l12" id=''>
@@ -136,28 +112,20 @@
 		</div>
 
 
-
-		<%-- 		<%
-			out.println("Você está conectando da porta:" + request.getRemotePort());
-		%>
- --%>
-
-
 		<div class="row note grid" id='alou'>
 			<jsp:useBean id="dao" class="mynote.DAO" />
 			<c:forEach var="note" items="${dao.getListaNota(idUser)}"
 				varStatus="idNote">
-				<!-- 				<script>
-					console.log(JSON.parse('${note.getInfo()}'))
-				</script>s
-			 -->
-				<div class='col s12 m4 l3 notinha' id='notinha${note.idNote}'>
+				<div class='col s12 m4 l3 notinha grid-item'
+					id='notinha${note.idNote}'>
 					<div class="card hoverable" id='note${note.idNote}'
 						style="background-color:${note.color};">
-						<div class="card-content" style="background-color:transparent;margin:10px;padding:10px;">
+						<div class="card-content"
+							style="background-color: transparent; margin: 10px; padding: 10px;">
 							<span class="card-title activator grey-text text-darken-4">Card
-								Title<i  class="material-icons right dropdown-trigger " href='#'
-								data-target='dropdown${note.idNote}'>more_vert </i>
+								Title<i class="material-icons dropdown-trigger " href='#'
+								data-target='dropdown${note.idNote}' style='margin-left: 8px;'>more_vert
+							</i>
 							</span>
 
 
@@ -169,8 +137,7 @@
 							onfocus="onNoteTextChange(${note.idNote})"
 							style="background-color: transparent;">
 
-							<span id='noteText${note.idNote}' class="white-text">${note.noteText}
-							</span>
+							<span id='noteText${note.idNote}'>${note.noteText} </span>
 						</div>
 
 						<ul id='dropdown${note.idNote}' class='dropdown-content'>
@@ -186,17 +153,17 @@
 									<i class="material-icons">delete</i>Delete
 								</div></li>
 						</ul>
-						<div id='noteTag'>
-							<div contenteditable="true" class='tag' id="tag${note.idNote}"
-								class="card-panel " onfocus="onTagChange(${note.idNote})">
+						<div id='noteFooter'>
+							<div id='noteTag'>
+								<div contenteditable="true" class='tag' id="tag${note.idNote}"
+									class="card-panel " onfocus="onTagChange(${note.idNote})">
 
-								<span id='note${note.idNote}' class="white-text">#${note.tag}
-								</span>
+									<span id='note${note.idNote}'>${note.tag} </span>
+								</div>
 							</div>
-							<div id='time${note.idNote}'>Last edited: ${note.time}</div>
+							<div id='time${note.idNote}' class='time' style='padding:5px;'>Last edited: ${note.time}</div>
+
 						</div>
-
-
 					</div>
 				</div>
 			</c:forEach>

@@ -56,9 +56,10 @@
 	
 	border-radius: 0.8em;
 
-	width:108%;
 	padding:3px;
 	margin:3px;
+	width: fit-content;
+    max-width: 100%;
 }
 #noteTag{
 	max-width:50%;

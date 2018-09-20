@@ -53,7 +53,7 @@ function onNoteTextChange(idNote) {
 
 		}).then((res) => {
 			(res.json().then((data) => {
-				note.setAttribute("style", "color:white");
+				note.setAttribute("style", "color:black");
 				note.innerText = data.noteText
 				noteInfo.style="order:-1;"
 				let time = document.getElementById('time'+idNote)
@@ -113,6 +113,8 @@ function onQuerySubmit(userId) {
 					noteContainer.appendChild(noteInfo);
 												
 
+					var elems = document.querySelectorAll('.dropdown-trigger');
+				    var instDrop = M.Dropdown.init(elems, {'closeOnClick':false});
 				})
 
 			}))
@@ -150,10 +152,13 @@ function onTagChange(idNote) {
 		}).then((res) => {
 			(res.json().then((data) => {
 
-
-				note.style.color = "white";
-
-				note.innerText ='#'+ tag
+				if(tag[0]=='#'){
+					note.innerText = tag
+				}
+				else{
+					note.innerText ='#'+ tag
+				}
+				
 				noteInfo.style="order:-1;"
 				let time = document.getElementById('time'+idNote)
 				time.innerText = 'Last edited: '+ data.time
@@ -258,7 +263,7 @@ function createNote(note) {
 						<div class="card-content" style="background-color:transparent;margin:10px;padding:10px;">
 							<span class="card-title activator grey-text text-darken-4">Card
 								Title<i  class="material-icons right dropdown-trigger " href='#'
-								data-target='dropdown${note.idNote}'>more_vert </i>
+								data-target='dropdown${note.idNote}' style='margin-left: 8px;'>more_vert </i>
 							</span>
 
 
@@ -270,7 +275,7 @@ function createNote(note) {
 							onfocus="onNoteTextChange(${note.idNote})"
 							style="background-color: transparent;">
 
-							<span id='noteText${note.idNote}' class="white-text">${note.noteText}
+							<span id='noteText${note.idNote}' >${note.noteText}
 							</span>
 						</div>
 
@@ -291,7 +296,7 @@ function createNote(note) {
 							<div contenteditable="true" class='tag' id="tag${note.idNote}"
 								class="card-panel " onfocus="onTagChange(${note.idNote})">
 
-								<span id='note${note.idNote}' class="white-text">#${note.tag}
+								<span id='note${note.idNote}' >#${note.tag}
 								</span>
 							</div>
 							<div id='time${note.idNote}'>Last edited: ${note.time}</div>
@@ -315,6 +320,7 @@ function changePass(){
 }
 document.addEventListener('DOMContentLoaded', function () {
 	console.log("importou o js")
+
 
 	var iconPicker = document.querySelectorAll('select');
 	var instIcon = M.FormSelect.init(iconPicker, {});
@@ -380,17 +386,19 @@ function onMakeNoteChange() {
 
 			card = createNote(data)
 			noteInfo.innerHTML = card
+			noteInfo.style="order:-1;"
+			console.log('esse eh id'+data.idNote)
 
-//			var grid = document.querySelector('.grid');
-//			var pckry = new Packery(grid, {
-//				// options
-//				itemSelector: '.grid-item',
-//				percentPosition:true
-//			})
-//			grid.appendChild(noteInfo)
-//			pckry.prepended(noteInfo)
+
 			let firstChild = document.getElementById("alou").firstChild.innerHTML;
+
 			noteContainer.insertBefore(noteInfo,noteContainer.firstElementChild)
+
+			let time = document.getElementById('time'+data.idNote)
+			time.innerText = 'Created: '+ data.time
+
+			console.log(time)
+
 			var elems = document.querySelectorAll('.dropdown-trigger');
 		    var instDrop = M.Dropdown.init(elems, {'closeOnClick':false});
 
