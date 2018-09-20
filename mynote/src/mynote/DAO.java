@@ -115,6 +115,8 @@ public class DAO {
 				note.setColor(rs.getString("color"));
 				note.setIdUser(rs.getInt("id_user"));
 				note.setTime(rs.getString("date"));
+				note.setTitle(rs.getString("title"));
+
 
 				notes.add(note);
 			}
