@@ -30,6 +30,8 @@ function onNoteTextChange(idNote) {
 	let note = document.getElementById("editor" + idNote)
 	let notezin = document.getElementById('note' + idNote)
 	let noteInfo = document.getElementById("notinha" + idNote)
+	
+	
 
 	note.addEventListener("input", debounce(() => {
 		console.log('atualizando o bd')
@@ -134,6 +136,13 @@ function onTagChange(idNote) {
 
 		const url = "/mynote/EditNoteTag"
 		let tag = note.innerText
+		if(tag[0]=='#'){
+			tag = tag
+		}
+		else{
+			tag ='#'+ tag
+		}
+		
 
 		let params = {
 			"tag": encodeURIComponent(tag),
